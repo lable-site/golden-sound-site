@@ -3,912 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOLDEN SOUND PRODUCTION — Музыкальный лейбл</title>
+    <title>GOLDEN SOUND — Музыкальный лейбл</title>
 
-    <!-- Шрифты -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         /* ============================================================
            ФАЙЛ: variables.css — Токены дизайна
         ============================================================ */
-
         :root {
-            /* Фон */
             --bg-deep:    #050505;
             --bg-surface: #0a0a0a;
             --bg-card:    #0f0f0f;
-            --bg-card-hover: #141414;
             --bg-line:    rgba(255,255,255,0.06);
 
-            /* Золото — металлический градиент */
-            --gold-gradient: linear-gradient(135deg,
-                #BF953F 0%,
-                #FCF6BA 25%,
-                #B38728 50%,
-                #FBF5B7 75%,
-                #AA771C 100%);
-            --gold-gradient-text: linear-gradient(135deg,
-                #c9a84c 0%,
-                #f0d060 35%,
-                #a07828 60%,
-                #e8c84a 100%);
+            /* Металлический золотой градиент */
+            --gold-gradient: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+            --gold-gradient-text: linear-gradient(135deg, #c9a84c 0%, #f0d060 35%, #a07828 60%, #e8c84a 100%);
             --gold-solid:   #c9a84c;
             --gold-dim:     rgba(191,149,63,0.15);
             --gold-border:  rgba(191,149,63,0.25);
-            --gold-glow:    rgba(191,149,63,0.08);
+            --gold-glow:    rgba(191,149,63,0.12);
 
-            /* Текст */
             --text-primary:   rgba(255,255,255,0.92);
             --text-secondary: rgba(255,255,255,0.50);
             --text-muted:     rgba(255,255,255,0.28);
 
-            /* Типографика */
             --font-display: 'Syncopate', sans-serif;
             --font-body:    'Montserrat', sans-serif;
             --font-serif:   'Cormorant Garamond', serif;
 
-            /* Сетка */
             --layout-x: clamp(24px, 5vw, 80px);
             --section-gap: clamp(80px, 10vw, 140px);
-
-            /* Анимации */
             --ease-gold: cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         /* ============================================================
            ФАЙЛ: base.css — Сброс и основы
         ============================================================ */
-
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        html {
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--bg-deep);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            cursor: none;
-        }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-body); background: var(--bg-deep); color: var(--text-primary); overflow-x: hidden; cursor: none; }
 
         /* Кастомный курсор */
-        .cursor {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--gold-solid);
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
-            mix-blend-mode: screen;
+        .cursor, .cursor-ring {
+            position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%); mix-blend-mode: screen;
         }
-        .cursor-ring {
-            position: fixed;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid var(--gold-border);
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: transform 0.12s ease, width 0.25s ease, height 0.25s ease, border-color 0.2s ease;
-        }
-        body:has(a:hover) .cursor,
-        body:has(button:hover) .cursor {
-            width: 14px;
-            height: 14px;
-        }
-        body:has(a:hover) .cursor-ring,
-        body:has(button:hover) .cursor-ring {
-            width: 48px;
-            height: 48px;
-            border-color: rgba(191,149,63,0.5);
-        }
+        .cursor { width: 8px; height: 8px; background: var(--gold-solid); transition: width 0.2s, height 0.2s; }
+        .cursor-ring { width: 32px; height: 32px; border: 1px solid var(--gold-border); z-index: 9998; transition: width 0.25s, height 0.25s, border-color 0.2s; }
+        body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 14px; height: 14px; }
+        body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width: 48px; height: 48px; border-color: rgba(191,149,63,0.5); }
 
         a { color: inherit; text-decoration: none; }
         img { display: block; max-width: 100%; }
 
-        /* Текстовый градиент-утилита */
-        .gold-text {
-            background: var(--gold-gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        .gold-text { background: var(--gold-gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         /* Reveal анимации */
-        .reveal {
-            opacity: 0;
-            transform: translateY(36px);
-            transition: opacity 0.9s var(--ease-gold), transform 0.9s var(--ease-gold);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-left {
-            opacity: 0;
-            transform: translateX(-40px);
-            transition: opacity 0.9s var(--ease-gold), transform 0.9s var(--ease-gold);
-        }
-        .reveal-left.active {
-            opacity: 1;
-            transform: translateX(0);
-        }
+        .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.9s var(--ease-gold), transform 0.9s var(--ease-gold); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-scale { opacity: 0; transform: scale(0.9); transition: opacity 1s var(--ease-gold), transform 1s var(--ease-gold); }
+        .reveal-scale.active { opacity: 1; transform: scale(1); }
 
-        /* Горизонтальная золотая линия */
-        .gold-rule {
-            width: 40px;
-            height: 1px;
-            background: var(--gold-gradient);
-            display: block;
-        }
+        .gold-rule { width: 40px; height: 1px; background: var(--gold-gradient); display: block; }
 
         /* ============================================================
            ФАЙЛ: header.css — Шапка
         ============================================================ */
-
         .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            height: 72px;
-            display: flex;
-            align-items: center;
-            padding: 0 var(--layout-x);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 72px;
+            display: flex; align-items: center; padding: 0 var(--layout-x);
             background: linear-gradient(to bottom, rgba(5,5,5,0.95) 0%, transparent 100%);
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.4s ease, background 0.4s ease;
+            border-bottom: 1px solid transparent; transition: all 0.4s ease;
         }
-        .header.scrolled {
-            background: rgba(5,5,5,0.96);
-            border-bottom-color: var(--bg-line);
-            backdrop-filter: blur(12px);
-        }
+        .header.scrolled { background: rgba(5,5,5,0.96); border-bottom-color: var(--bg-line); backdrop-filter: blur(12px); }
 
-        .header-brand {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-        }
-        .header-brand-main {
-            font-family: var(--font-display);
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.18em;
-            background: var(--gold-gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .header-brand-sub {
-            font-size: 9px;
-            font-weight: 300;
-            letter-spacing: 0.3em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
+        .header-brand { display: flex; flex-direction: column; gap: 1px; }
+        .header-brand-main { font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 0.18em; background: var(--gold-gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-brand-sub { font-size: 9px; font-weight: 300; letter-spacing: 0.3em; color: var(--text-muted); text-transform: uppercase; }
 
-        .header-nav {
-            margin-left: auto;
-            display: flex;
-            gap: 36px;
-            align-items: center;
-        }
-        .header-nav a {
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-        }
+        .header-nav { margin-left: auto; display: flex; gap: 36px; align-items: center; }
+        .header-nav a { font-size: 10px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-secondary); transition: color 0.3s ease; }
         .header-nav a:hover { color: var(--gold-solid); }
 
         /* ============================================================
-           ФАЙЛ: hero.css — Главный экран
+           ФАЙЛ: hero.css — Главный экран (Центрированный)
         ============================================================ */
-
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-end;
-            padding: 0 var(--layout-x) 80px;
-            overflow: hidden;
-        }
-
-        #hero-canvas {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-        }
-
-        /* Шум-текстура поверх canvas */
+        .hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #hero-canvas { position: absolute; inset: 0; z-index: 0; }
         .hero::after {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.4;
+            pointer-events: none; z-index: 1; opacity: 0.4;
         }
 
         .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 900px;
+            position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: 900px; padding-top: 40px;
         }
 
-        .hero-eyebrow {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 28px;
+        /* Ебейший логотип */
+        .hero-logo-wrap {
+            margin-bottom: 40px; position: relative;
         }
-        .hero-eyebrow span {
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--gold-solid);
+        .hero-logo-wrap::before {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 160px; height: 160px;
+            transform: translate(-50%, -50%); border-radius: 50%; background: var(--gold-gradient);
+            filter: blur(40px); opacity: 0.15; z-index: -1; animation: pulseGlow 4s ease-in-out infinite;
         }
+        .hero-logo {
+            width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
+            border: 1px solid var(--gold-border); padding: 6px;
+            background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(191,149,63,0.2);
+            animation: logoFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.25; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .hero-eyebrow { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 24px; }
+        .hero-eyebrow span:not(.gold-rule) { font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-solid); }
 
         .hero-title {
-            font-family: var(--font-display);
-            font-size: clamp(42px, 7vw, 96px);
-            font-weight: 700;
-            line-height: 0.95;
-            letter-spacing: -0.01em;
-            text-transform: uppercase;
-            margin-bottom: 32px;
-            opacity: 0;
-            transform: translateY(40px);
-            animation: heroTitleIn 1.2s var(--ease-gold) 0.3s forwards;
+            font-family: var(--font-display); font-size: clamp(40px, 8vw, 100px); font-weight: 700;
+            line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 32px;
+            opacity: 0; transform: translateY(40px); animation: heroTitleIn 1.2s var(--ease-gold) 0.3s forwards;
+            display: flex; flex-direction: column; align-items: center;
         }
+        @keyframes heroTitleIn { to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes heroTitleIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-title-line {
-            display: block;
-        }
-        .hero-title-line.gold {
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        .hero-title-line { display: block; }
+        .hero-title-line.gold { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .hero-tagline {
-            font-family: var(--font-serif);
-            font-size: clamp(18px, 2.5vw, 26px);
-            font-weight: 300;
-            font-style: italic;
-            color: var(--text-secondary);
-            letter-spacing: 0.04em;
-            margin-bottom: 52px;
-            opacity: 0;
-            animation: heroTitleIn 1s var(--ease-gold) 0.7s forwards;
+            font-family: var(--font-serif); font-size: clamp(18px, 2.5vw, 26px); font-weight: 300; font-style: italic;
+            color: var(--text-secondary); letter-spacing: 0.04em; margin-bottom: 52px;
+            opacity: 0; animation: heroTitleIn 1s var(--ease-gold) 0.7s forwards;
         }
 
-        .hero-cta {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-            opacity: 0;
-            animation: heroTitleIn 1s var(--ease-gold) 1s forwards;
-        }
+        .hero-cta { display: flex; align-items: center; justify-content: center; gap: 28px; opacity: 0; animation: heroTitleIn 1s var(--ease-gold) 1s forwards; }
 
-        /* Скролл-индикатор */
-        .scroll-hint {
-            position: absolute;
-            bottom: 36px;
-            right: var(--layout-x);
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .scroll-hint span {
-            font-size: 8px;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            writing-mode: vertical-rl;
-        }
-        .scroll-line {
-            width: 1px;
-            height: 48px;
-            background: linear-gradient(to bottom, var(--gold-solid), transparent);
-            animation: scrollPulse 2s ease-in-out infinite;
-        }
-        @keyframes scrollPulse {
-            0%, 100% { opacity: 0.3; transform: scaleY(1); }
-            50% { opacity: 1; transform: scaleY(1.3); }
-        }
+        .scroll-hint { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .scroll-hint span { font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); }
+        .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold-solid), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+        @keyframes scrollPulse { 0%, 100% { opacity: 0.3; transform: scaleY(1); transform-origin: top; } 50% { opacity: 1; transform: scaleY(1.5); transform-origin: top; } }
 
         /* ============================================================
            ФАЙЛ: buttons.css — Кнопки
         ============================================================ */
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-family: var(--font-body);
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-            transition: all 0.35s var(--ease-gold);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-gold {
-            padding: 16px 36px;
-            background: var(--gold-gradient);
-            color: #050505;
-        }
-        .btn-gold::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; border: none; cursor: none; transition: all 0.35s var(--ease-gold); position: relative; overflow: hidden; }
+        .btn-gold { padding: 16px 36px; background: var(--gold-gradient); color: #050505; }
+        .btn-gold::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; }
         .btn-gold:hover::after { opacity: 1; }
         .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(191,149,63,0.3); }
-
-        .btn-outline {
-            padding: 15px 35px;
-            background: transparent;
-            color: var(--gold-solid);
-            border: 1px solid var(--gold-border);
-        }
-        .btn-outline:hover {
-            background: var(--gold-dim);
-            border-color: var(--gold-solid);
-        }
+        .btn-outline { padding: 15px 35px; background: transparent; color: var(--gold-solid); border: 1px solid var(--gold-border); }
+        .btn-outline:hover { background: var(--gold-dim); border-color: var(--gold-solid); }
 
         /* ============================================================
            ФАЙЛ: sections.css — Общие стили секций
         ============================================================ */
-
-        .section {
-            padding: var(--section-gap) 0;
-        }
-
-        .section-header {
-            padding: 0 var(--layout-x) 64px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-        }
-
-        .section-label {
-            font-size: 9px;
-            font-weight: 500;
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            color: var(--gold-solid);
-            margin-bottom: 14px;
-        }
-
-        .section-title {
-            font-family: var(--font-display);
-            font-size: clamp(28px, 4vw, 52px);
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            line-height: 1;
-        }
-
-        .section-divider {
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(to right, var(--gold-solid), transparent 60%);
-            margin: 0 var(--layout-x);
-            opacity: 0.3;
-        }
+        .section { padding: var(--section-gap) 0; }
+        .section-header { padding: 0 var(--layout-x) 64px; display: flex; align-items: flex-end; justify-content: space-between; }
+        .section-label { font-size: 9px; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-solid); margin-bottom: 14px; }
+        .section-title { font-family: var(--font-display); font-size: clamp(28px, 4vw, 52px); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1; }
 
         /* ============================================================
-           ФАЙЛ: artists.css — Секция артистов
+           ФАЙЛ: artists.css — Секция артистов (Равные карточки)
         ============================================================ */
-
-        #artists {
-            background:
-                radial-gradient(ellipse 60% 50% at 50% 50%, rgba(191,149,63,0.04) 0%, transparent 70%),
-                var(--bg-deep);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .artists-canvas-wrap {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-        #artists-canvas {
-            position: absolute;
-            inset: 0;
-        }
-
+        #artists { background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(191,149,63,0.04) 0%, transparent 70%), var(--bg-deep); position: relative; overflow: hidden; }
+        .artists-canvas-wrap { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+        #artists-canvas { position: absolute; inset: 0; }
+        
         .artists-grid {
-            position: relative;
-            z-index: 1;
-            padding: 0 var(--layout-x);
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: auto auto;
-            gap: 16px;
+            position: relative; z-index: 1; padding: 0 var(--layout-x);
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;
         }
 
-        /* MACAN — главная карточка, занимает левую колонку на всю высоту */
-        .artist-card {
-            position: relative;
-            overflow: hidden;
-            background: var(--bg-card);
-            border: 1px solid var(--bg-line);
-            transition: border-color 0.4s ease, transform 0.4s var(--ease-gold);
-            cursor: none;
-        }
-        .artist-card:hover {
-            border-color: var(--gold-border);
-            transform: translateY(-4px);
-        }
+        .artist-card { position: relative; overflow: hidden; background: var(--bg-card); border: 1px solid var(--bg-line); transition: all 0.4s var(--ease-gold); cursor: none; }
+        .artist-card:hover { border-color: var(--gold-border); transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
         .artist-card:hover .artist-overlay { opacity: 1; }
         .artist-card:hover .artist-img { transform: scale(1.06); }
 
-        .artist-card.main {
-            grid-column: 1;
-            grid-row: 1 / 3;
-        }
-        .artist-card.main .artist-img-wrap { aspect-ratio: 3/4.5; }
-        .artist-card:not(.main) .artist-img-wrap { aspect-ratio: 3/2.8; }
+        .artist-img-wrap { width: 100%; aspect-ratio: 3/4; overflow: hidden; background: #080808; }
+        .artist-img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; transition: transform 0.7s var(--ease-gold); }
 
-        .artist-img-wrap {
-            width: 100%;
-            overflow: hidden;
-        }
-        .artist-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center;
-            display: block;
-            transition: transform 0.7s var(--ease-gold);
-        }
+        .artist-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0.2) 40%, transparent 80%); opacity: 0.7; transition: opacity 0.4s ease; }
+        .artist-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; text-align: center; }
+        .artist-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-primary); }
 
-        .artist-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top,
-                rgba(5,5,5,0.85) 0%,
-                rgba(5,5,5,0.2) 40%,
-                transparent 70%);
-            opacity: 0.6;
-            transition: opacity 0.4s ease;
-        }
-
-        .artist-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 24px 28px;
-        }
-
-        .artist-badge {
-            display: inline-block;
-            font-size: 8px;
-            font-weight: 600;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            background: var(--gold-gradient);
-            color: #050505;
-            margin-bottom: 10px;
-        }
-
-        .artist-name {
-            font-family: var(--font-display);
-            font-size: clamp(18px, 2.5vw, 30px);
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-primary);
-        }
-        .artist-card.main .artist-name {
-            font-size: clamp(26px, 3.5vw, 44px);
-        }
-
-        /* "Добавить артиста" — пустой слот */
-        .artist-card.add-slot {
-            border-style: dashed;
-            border-color: rgba(191,149,63,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            aspect-ratio: 3/2.8;
-            background: transparent;
-            cursor: none;
-        }
-        .artist-card.add-slot:hover {
-            border-color: var(--gold-border);
-            background: var(--gold-dim);
-            transform: translateY(-4px);
-        }
-        .add-slot-inner {
-            text-align: center;
-        }
-        .add-slot-icon {
-            width: 48px;
-            height: 48px;
-            border: 1px solid var(--gold-border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 18px;
-            color: var(--gold-solid);
-            transition: all 0.3s ease;
-        }
-        .artist-card.add-slot:hover .add-slot-icon {
-            background: var(--gold-dim);
-            border-color: var(--gold-solid);
-        }
-        .add-slot-text {
-            font-size: 10px;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
+        .artist-card.add-slot { border-style: dashed; border-color: rgba(191,149,63,0.2); display: flex; align-items: center; justify-content: center; aspect-ratio: 3/4; background: transparent; }
+        .artist-card.add-slot:hover { border-color: var(--gold-border); background: var(--gold-dim); transform: translateY(-6px); }
+        .add-slot-inner { text-align: center; }
+        .add-slot-icon { width: 48px; height: 48px; border: 1px solid var(--gold-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 18px; color: var(--gold-solid); transition: all 0.3s ease; }
+        .artist-card.add-slot:hover .add-slot-icon { background: var(--gold-dim); border-color: var(--gold-solid); }
+        .add-slot-text { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted); }
 
         /* ============================================================
-           ФАЙЛ: services.css — Секция услуг
+           ФАЙЛ: services & contacts & footer
         ============================================================ */
-
-        #services {
-            background: var(--bg-surface);
-            border-top: 1px solid var(--bg-line);
-            border-bottom: 1px solid var(--bg-line);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            padding: 0 var(--layout-x);
-        }
-
-        .service-card {
-            padding: 48px 36px;
-            border-right: 1px solid var(--bg-line);
-            position: relative;
-            overflow: hidden;
-            transition: background 0.4s ease;
-        }
+        #services { background: var(--bg-surface); border-top: 1px solid var(--bg-line); border-bottom: 1px solid var(--bg-line); }
+        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 0 var(--layout-x); }
+        .service-card { padding: 48px 36px; border-right: 1px solid var(--bg-line); position: relative; transition: background 0.4s ease; }
         .service-card:last-child { border-right: none; }
-        .service-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--gold-gradient);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
+        .service-card::before { content: ''; position: absolute; inset: 0; background: var(--gold-gradient); opacity: 0; transition: opacity 0.4s ease; }
         .service-card:hover::before { opacity: 0.03; }
         .service-card:hover .service-icon-wrap { border-color: var(--gold-solid); }
         .service-card:hover .service-num { color: var(--gold-solid); }
+        .service-num { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.2em; color: var(--text-muted); margin-bottom: 32px; transition: color 0.3s; }
+        .service-icon-wrap { width: 52px; height: 52px; border: 1px solid var(--bg-line); display: flex; align-items: center; justify-content: center; margin-bottom: 28px; transition: border-color 0.3s; }
+        .service-icon { font-size: 20px; background: var(--gold-gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .service-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; color: var(--text-primary); }
+        .service-desc { font-size: 12px; font-weight: 300; line-height: 1.7; color: var(--text-muted); }
 
-        .service-num {
-            font-family: var(--font-display);
-            font-size: 11px;
-            letter-spacing: 0.2em;
-            color: var(--text-muted);
-            margin-bottom: 32px;
-            transition: color 0.3s ease;
-        }
-
-        .service-icon-wrap {
-            width: 52px;
-            height: 52px;
-            border: 1px solid var(--bg-line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 28px;
-            transition: border-color 0.3s ease;
-        }
-        .service-icon {
-            font-size: 20px;
-            background: var(--gold-gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .service-title {
-            font-family: var(--font-display);
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-        }
-
-        .service-desc {
-            font-size: 12px;
-            font-weight: 300;
-            line-height: 1.7;
-            color: var(--text-muted);
-        }
-
-        /* ============================================================
-           ФАЙЛ: contacts.css — Секция контактов и соцсетей
-        ============================================================ */
-
-        #contacts {
-            padding: var(--section-gap) var(--layout-x);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-        }
-
-        .contacts-left .section-label {
-            margin-bottom: 14px;
-        }
-        .contacts-title {
-            font-family: var(--font-display);
-            font-size: clamp(28px, 4vw, 52px);
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            line-height: 1;
-            margin-bottom: 48px;
-        }
-
-        .contacts-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-        .contacts-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            padding: 24px 0;
-            border-bottom: 1px solid var(--bg-line);
-        }
+        #contacts { padding: var(--section-gap) var(--layout-x); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+        .contacts-title { font-family: var(--font-display); font-size: clamp(28px, 4vw, 52px); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1; margin-bottom: 48px; }
+        .contacts-list { list-style: none; display: flex; flex-direction: column; }
+        .contacts-item { display: flex; align-items: flex-start; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--bg-line); }
         .contacts-item:first-child { border-top: 1px solid var(--bg-line); }
-        .contact-icon {
-            width: 36px;
-            height: 36px;
-            border: 1px solid var(--gold-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 12px;
-            color: var(--gold-solid);
-            margin-top: 2px;
-        }
-        .contact-label {
-            font-size: 9px;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-        .contact-value {
-            font-size: 14px;
-            font-weight: 400;
-            color: var(--text-primary);
-            transition: color 0.3s ease;
-        }
+        .contact-icon { width: 36px; height: 36px; border: 1px solid var(--gold-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; color: var(--gold-solid); margin-top: 2px; }
+        .contact-label { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+        .contact-value { font-size: 14px; font-weight: 400; color: var(--text-primary); transition: color 0.3s; }
         a.contact-value:hover { color: var(--gold-solid); }
 
-        /* Соцсети */
-        .socials-right {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-
-        .socials-label {
-            font-size: 9px;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: var(--gold-solid);
-            margin-bottom: 36px;
-        }
-
-        .socials-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            padding: 22px 0;
-            border-bottom: 1px solid var(--bg-line);
-            position: relative;
-            overflow: hidden;
-            transition: padding-left 0.4s var(--ease-gold);
-        }
+        .socials-right { display: flex; flex-direction: column; justify-content: flex-end; }
+        .socials-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-solid); margin-bottom: 36px; }
+        .social-link { display: flex; align-items: center; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--bg-line); position: relative; transition: padding-left 0.4s var(--ease-gold); }
         .social-link:first-child { border-top: 1px solid var(--bg-line); }
-        .social-link::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 0;
-            background: var(--gold-gradient);
-            opacity: 0.06;
-            transition: width 0.4s var(--ease-gold);
-        }
+        .social-link::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--gold-gradient); opacity: 0.06; transition: width 0.4s var(--ease-gold); }
         .social-link:hover::before { width: 100%; }
         .social-link:hover { padding-left: 12px; }
         .social-link:hover .social-arrow { opacity: 1; transform: translateX(0); }
-
-        .social-icon-wrap {
-            width: 44px;
-            height: 44px;
-            border: 1px solid var(--bg-line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 16px;
-            color: var(--gold-solid);
-            transition: border-color 0.3s ease;
-        }
-        .social-link:hover .social-icon-wrap {
-            border-color: var(--gold-border);
-        }
-
+        .social-icon-wrap { width: 44px; height: 44px; border: 1px solid var(--bg-line); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--gold-solid); transition: border-color 0.3s; }
+        .social-link:hover .social-icon-wrap { border-color: var(--gold-border); }
         .social-info { flex: 1; }
-        .social-name {
-            font-family: var(--font-display);
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--text-primary);
-            margin-bottom: 3px;
-        }
-        .social-handle {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        .social-arrow {
-            font-size: 14px;
-            color: var(--gold-solid);
-            opacity: 0;
-            transform: translateX(-8px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
+        .social-name { font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-primary); margin-bottom: 3px; }
+        .social-handle { font-size: 11px; color: var(--text-muted); }
+        .social-arrow { font-size: 14px; color: var(--gold-solid); opacity: 0; transform: translateX(-8px); transition: opacity 0.3s, transform 0.3s; }
 
-        /* ============================================================
-           ФАЙЛ: footer.css — Подвал
-        ============================================================ */
-
-        footer {
-            padding: 32px var(--layout-x);
-            border-top: 1px solid var(--bg-line);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .footer-brand {
-            font-family: var(--font-display);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            background: var(--gold-gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .footer-copy {
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-        }
+        footer { padding: 32px var(--layout-x); border-top: 1px solid var(--bg-line); display: flex; align-items: center; justify-content: space-between; }
+        .footer-brand { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.2em; background: var(--gold-gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .footer-copy { font-size: 10px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; }
 
         /* ============================================================
            ФАЙЛ: responsive.css — Адаптив
         ============================================================ */
-
         @media (max-width: 1023px) {
-            .services-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .services-grid { grid-template-columns: 1fr 1fr; }
             .service-card:nth-child(2) { border-right: none; }
             .service-card:nth-child(3) { border-top: 1px solid var(--bg-line); }
             .service-card:nth-child(4) { border-right: none; border-top: 1px solid var(--bg-line); }
         }
-
         @media (max-width: 768px) {
             .header-nav { display: none; }
-
-            .artists-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .artist-card.main {
-                grid-column: 1 / 3;
-                grid-row: 1;
-            }
-            .artist-card.main .artist-img-wrap { aspect-ratio: 4/3; }
-
-            #contacts {
-                grid-template-columns: 1fr;
-                gap: 48px;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 12px;
-                text-align: center;
-            }
-
+            #contacts { grid-template-columns: 1fr; gap: 48px; }
+            footer { flex-direction: column; gap: 12px; text-align: center; }
             .body { cursor: auto; }
             .cursor, .cursor-ring { display: none; }
         }
-
         @media (max-width: 480px) {
-            .artists-grid { grid-template-columns: 1fr; }
-            .artist-card.main { grid-column: 1; }
             .services-grid { grid-template-columns: 1fr; }
             .service-card { border-right: none; border-top: 1px solid var(--bg-line); }
+            .hero-title { font-size: clamp(36px, 10vw, 50px); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Кастомный курсор -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursor-ring"></div>
 
-    <!-- ============================================================
-         HEADER
-    ============================================================ -->
     <header class="header" id="header">
         <div class="header-brand">
-            <span class="header-brand-main">GSP</span>
-            <span class="header-brand-sub">Golden Sound Production</span>
+            <span class="header-brand-main">GS</span>
+            <span class="header-brand-sub">Golden Sound</span>
         </div>
         <nav class="header-nav">
             <a href="#artists">Артисты</a>
@@ -917,27 +295,23 @@
         </nav>
     </header>
 
-    <!-- ============================================================
-         HERO
-    ============================================================ -->
     <section class="hero" id="hero">
         <canvas id="hero-canvas"></canvas>
 
-        <div class="scroll-hint">
-            <span>Scroll</span>
-            <div class="scroll-line"></div>
-        </div>
-
         <div class="hero-content">
-            <div class="hero-eyebrow reveal-left">
+            <div class="hero-logo-wrap reveal-scale">
+                <img src="https://yt3.googleusercontent.com/_AbCMm7NPP-BW3apQ94H3CnaVe0XlkPklw--OclFvVFTHnnFgho-kqOJsVBTNpSnRJ-gnI-guGs=s900-c-k-c0x00ffffff-no-rj" alt="GS Logo" class="hero-logo">
+            </div>
+
+            <div class="hero-eyebrow reveal">
                 <span class="gold-rule"></span>
                 <span>Московский Музыкальный Лейбл</span>
+                <span class="gold-rule"></span>
             </div>
 
             <h1 class="hero-title">
                 <span class="hero-title-line">Golden</span>
                 <span class="hero-title-line gold">Sound</span>
-                <span class="hero-title-line">Production</span>
             </h1>
 
             <p class="hero-tagline" id="hero-tagline">Мы обречены на успех</p>
@@ -947,11 +321,13 @@
                 <a href="#artists" class="btn btn-outline">Артисты</a>
             </div>
         </div>
+
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
     </section>
 
-    <!-- ============================================================
-         ARTISTS
-    ============================================================ -->
     <section class="section" id="artists">
         <div class="artists-canvas-wrap">
             <canvas id="artists-canvas"></canvas>
@@ -965,13 +341,9 @@
         </div>
 
         <div class="artists-grid" id="artists-grid">
-            <!-- Заполняется через JS -->
-        </div>
+            </div>
     </section>
 
-    <!-- ============================================================
-         SERVICES
-    ============================================================ -->
     <section class="section" id="services">
         <div class="section-header">
             <div class="reveal">
@@ -981,81 +353,48 @@
         </div>
 
         <div class="services-grid" id="services-grid">
-            <!-- Заполняется через JS -->
-        </div>
+            </div>
     </section>
 
-    <!-- ============================================================
-         CONTACTS
-    ============================================================ -->
     <section id="contacts">
         <div class="contacts-left reveal">
             <p class="section-label">Где нас найти</p>
             <h2 class="contacts-title">Контакты</h2>
-
-            <ul class="contacts-list" id="contacts-list">
-                <!-- Заполняется через JS -->
-            </ul>
+            <ul class="contacts-list" id="contacts-list"></ul>
         </div>
 
         <div class="socials-right reveal">
             <p class="socials-label">Мы в сети</p>
-            <div class="socials-list" id="socials-list">
-                <!-- Заполняется через JS -->
-            </div>
+            <div class="socials-list" id="socials-list"></div>
         </div>
     </section>
 
-    <!-- ============================================================
-         FOOTER
-    ============================================================ -->
     <footer>
-        <span class="footer-brand">GSP © 2024</span>
-        <span class="footer-copy">Golden Sound Production. Москва, Россия.</span>
+        <span class="footer-brand">GS © 2026</span>
+        <span class="footer-copy">Golden Sound. Москва, Россия.</span>
     </footer>
 
     <script>
     'use strict';
 
-    // ==== ФАЙЛ: config.js ====
-    // Переключи USE_SUPABASE на true и вставь URL + KEY чтобы подключить базу.
     const CONFIG = {
         USE_SUPABASE: false,
         SUPABASE_URL: 'СЮДА_Я_ВСТАВЛЮ_URL',
         SUPABASE_KEY: 'СЮДА_Я_ВСТАВЛЮ_KEY'
     };
 
-    // ==== ФАЙЛ: mock-db.js ====
-    // Структура точно повторяет будущие таблицы Supabase.
-    // Когда переключишь USE_SUPABASE на true — эти данные не используются.
     const MOCK_DB = {
         settings: [
             { key: 'hero_tagline',   value: 'Мы обречены на успех' },
-            { key: 'hero_title',     value: 'GOLDEN SOUND PRODUCTION — музыкальный лейбл в самом сердце столицы.' },
             { key: 'address_1',      value: 'Москва, 109012, Театральный проезд, 3с3' },
             { key: 'address_2',      value: 'Москва, 109052, Смирновская 25, стр.16, 3 этаж, офис 317' },
             { key: 'phone',          value: '+7 999 904-88-86' },
             { key: 'email',          value: 'gsp.sound@mail.ru' },
         ],
         artists: [
-            {
-                id: 1,
-                name: 'MACAN',
-                photo_url: 'https://instagram.fala6-1.fna.fbcdn.net/v/t39.30808-6/468438992_18311391877161014_744253164870119590_n.jpg',
-                is_main: true
-            },
-            {
-                id: 2,
-                name: 'SCIRENA',
-                photo_url: 'https://instagram.fala6-1.fna.fbcdn.net/v/t51.82787-15/583785268_18544737445052042_7113025440448799166_n.jpg',
-                is_main: false
-            },
-            {
-                id: 3,
-                name: 'A.V.G.',
-                photo_url: 'https://multi-admin.ru/mediabank_blog/11/323289/29c45b8df4f38a786e184b1c3d11bf05.jpg',
-                is_main: false
-            }
+            { id: 1, name: 'MACAN',   photo_url: 'https://instagram.fala6-1.fna.fbcdn.net/v/t39.30808-6/468438992_18311391877161014_744253164870119590_n.jpg' },
+            { id: 2, name: 'SCIRENA', photo_url: 'https://instagram.fala6-1.fna.fbcdn.net/v/t51.82787-15/583785268_18544737445052042_7113025440448799166_n.jpg' },
+            { id: 3, name: 'A.V.G.',  photo_url: 'https://multi-admin.ru/mediabank_blog/11/323289/29c45b8df4f38a786e184b1c3d11bf05.jpg' }
         ],
         services: [
             { id: 1, title: 'Студия Звукозаписи', icon: 'fa-solid fa-microphone',   description: 'Профессиональная запись, сведение и мастеринг в акустически совершенных студиях' },
@@ -1064,470 +403,161 @@
             { id: 4, title: 'Продвижение',        icon: 'fa-solid fa-chart-line',    description: 'Маркетинговые кампании, работа с медиа, плейлистинг и рост аудитории' }
         ],
         socials: [
-            { id: 1, name: 'YouTube',   handle: 'Golden Sound Production', icon: 'fa-brands fa-youtube',   url: 'https://www.youtube.com/channel/UCy8MBNS-yBok_3nbCHJ0H3w' },
+            { id: 1, name: 'YouTube',   handle: 'Golden Sound',          icon: 'fa-brands fa-youtube',   url: 'https://www.youtube.com/channel/UCy8MBNS-yBok_3nbCHJ0H3w' },
             { id: 2, name: 'VKontakte', handle: 'goldensound_official',    icon: 'fa-brands fa-vk',        url: 'https://vk.com/goldensound_official' },
             { id: 3, name: 'Instagram', handle: 'goldensound.18',          icon: 'fa-brands fa-instagram', url: 'https://www.instagram.com/goldensound.18' }
         ]
     };
 
-    // ==== ФАЙЛ: supabase.js ====
-    // Универсальная функция-обёртка.
-    // false → данные из MOCK_DB (сейчас).
-    // true  → реальный запрос к Supabase (после вставки ключей).
     async function fetchData(tableName) {
-        if (!CONFIG.USE_SUPABASE) {
-            // Имитируем async-задержку как при реальном fetch
-            return Promise.resolve(MOCK_DB[tableName] || []);
-        }
-
+        if (!CONFIG.USE_SUPABASE) return Promise.resolve(MOCK_DB[tableName] || []);
         const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/${tableName}?select=*`, {
-            headers: {
-                'apikey': CONFIG.SUPABASE_KEY,
-                'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}`
-            }
+            headers: { 'apikey': CONFIG.SUPABASE_KEY, 'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}` }
         });
-        if (!res.ok) throw new Error(`Supabase ошибка ${res.status} (${tableName})`);
+        if (!res.ok) throw new Error(`Supabase ошибка ${res.status}`);
         return res.json();
     }
 
-    // ==== ФАЙЛ: canvas.js — Hero ====
-    // Золотая пыль: медленно плывущие микро-частицы.
-    // CPU-лёгкие: маленькие, редкие, без интерактива мыши.
-    const heroCanvas  = document.getElementById('hero-canvas');
-    const heroCtx     = heroCanvas.getContext('2d', { alpha: false });
-    const artCanvas   = document.getElementById('artists-canvas');
-    const artCtx      = artCanvas.getContext('2d', { alpha: true });
+    // ==== Canvas: Золотая пыль ====
+    const heroCanvas = document.getElementById('hero-canvas'), heroCtx = heroCanvas.getContext('2d', { alpha: false });
+    const artCanvas = document.getElementById('artists-canvas'), artCtx = artCanvas.getContext('2d', { alpha: true });
+    let HW, HH, AW, AH, heroDust = [], artistsDust = [], rafId = null, lastTime = performance.now();
 
-    let HW, HH, AW, AH;
-    let heroDust    = [];
-    let artistsDust = [];
-    let rafId       = null;
-    let lastTime    = performance.now();
-
-    // Одна частица золотой пыли
     class Dust {
-        constructor(w, h, section) {
-            this.w = w; this.h = h;
-            this.section = section;
-            this.reset(true);
-        }
+        constructor(w, h) { this.w = w; this.h = h; this.reset(true); }
         reset(initial) {
-            this.x = Math.random() * this.w;
-            this.y = initial ? Math.random() * this.h : this.h + 4;
-            this.size  = Math.random() * 1.2 + 0.2;       // 0.2 – 1.4px
-            this.alpha = Math.random() * 0.35 + 0.05;     // очень прозрачные
-            this.speedY = -(Math.random() * 0.18 + 0.04); // вверх, медленно
-            this.speedX = (Math.random() - 0.5) * 0.06;
-            this.drift  = Math.random() * 0.002 + 0.001;
-            this.driftAngle = Math.random() * Math.PI * 2;
-            // Цвет: золотой диапазон
-            const r = 180 + Math.floor(Math.random() * 60); // 180–240
-            const g = 140 + Math.floor(Math.random() * 50); // 140–190
-            const b = 30  + Math.floor(Math.random() * 40); // 30–70
+            this.x = Math.random() * this.w; this.y = initial ? Math.random() * this.h : this.h + 4;
+            this.size = Math.random() * 1.2 + 0.2; this.alpha = Math.random() * 0.35 + 0.05;
+            this.speedY = -(Math.random() * 0.18 + 0.04); this.speedX = (Math.random() - 0.5) * 0.06;
+            this.drift = Math.random() * 0.002 + 0.001; this.driftAngle = Math.random() * Math.PI * 2;
+            const r = 180 + Math.floor(Math.random() * 60), g = 140 + Math.floor(Math.random() * 50), b = 30 + Math.floor(Math.random() * 40);
             this.color = `rgba(${r},${g},${b},`;
         }
         update(ts) {
-            this.driftAngle += this.drift * ts;
-            this.x += this.speedX * ts + Math.sin(this.driftAngle) * 0.08;
-            this.y += this.speedY * ts;
-            // Мерцание
+            this.driftAngle += this.drift * ts; this.x += this.speedX * ts + Math.sin(this.driftAngle) * 0.08; this.y += this.speedY * ts;
             this.alpha += Math.sin(this.driftAngle * 2) * 0.003;
             if (this.y < -4 || this.x < -4 || this.x > this.w + 4) this.reset(false);
         }
         draw(ctx) {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = this.color + Math.max(0, Math.min(1, this.alpha)) + ')';
-            ctx.fill();
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color + Math.max(0, Math.min(1, this.alpha)) + ')'; ctx.fill();
         }
     }
 
-    function resizeHero() {
+    function resizeCanvas() {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const section = document.getElementById('hero');
-        HW = section.offsetWidth;
-        HH = section.offsetHeight;
-        heroCanvas.width  = HW * dpr;
-        heroCanvas.height = HH * dpr;
-        heroCanvas.style.width  = HW + 'px';
-        heroCanvas.style.height = HH + 'px';
-        heroCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        HW = document.getElementById('hero').offsetWidth; HH = document.getElementById('hero').offsetHeight;
+        heroCanvas.width = HW * dpr; heroCanvas.height = HH * dpr;
+        heroCanvas.style.width = HW + 'px'; heroCanvas.style.height = HH + 'px'; heroCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        heroDust = Array.from({length: Math.min(200, Math.floor(HW * HH / 6000))}, () => new Dust(HW, HH));
 
-        // Тёмно-чёрный фон
-        heroCtx.fillStyle = '#050505';
-        heroCtx.fillRect(0, 0, HW, HH);
-
-        // Мягкий радиальный акцент — золотистый туман в центре
-        const cx = HW * 0.3, cy = HH * 0.7;
-        const grad = heroCtx.createRadialGradient(cx, cy, 0, cx, cy, HW * 0.55);
-        grad.addColorStop(0, 'rgba(191,149,63,0.07)');
-        grad.addColorStop(1, 'rgba(5,5,5,0)');
-        heroCtx.fillStyle = grad;
-        heroCtx.fillRect(0, 0, HW, HH);
-
-        // Частицы
-        const count = Math.min(200, Math.floor(HW * HH / 6000));
-        heroDust = [];
-        for (let i = 0; i < count; i++) heroDust.push(new Dust(HW, HH, 'hero'));
-    }
-
-    function resizeArtists() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const section = document.getElementById('artists');
-        AW = section.offsetWidth;
-        AH = section.offsetHeight;
-        artCanvas.width  = AW * dpr;
-        artCanvas.height = AH * dpr;
-        artCanvas.style.width  = AW + 'px';
-        artCanvas.style.height = AH + 'px';
-        artCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        const count = Math.min(80, Math.floor(AW * AH / 12000));
-        artistsDust = [];
-        for (let i = 0; i < count; i++) artistsDust.push(new Dust(AW, AH, 'artists'));
+        AW = document.getElementById('artists').offsetWidth; AH = document.getElementById('artists').offsetHeight;
+        artCanvas.width = AW * dpr; artCanvas.height = AH * dpr;
+        artCanvas.style.width = AW + 'px'; artCanvas.style.height = AH + 'px'; artCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        artistsDust = Array.from({length: Math.min(80, Math.floor(AW * AH / 12000))}, () => new Dust(AW, AH));
     }
 
     function animateAll(now) {
-        const dt = Math.min(now - lastTime, 100);
-        lastTime = now;
-        const ts = dt / 16.66;
-
-        // Hero: перерисовываем фон каждый кадр
-        heroCtx.fillStyle = '#050505';
-        heroCtx.fillRect(0, 0, HW, HH);
-        const cx = HW * 0.3, cy = HH * 0.7;
-        const grad = heroCtx.createRadialGradient(cx, cy, 0, cx, cy, HW * 0.55);
-        grad.addColorStop(0, 'rgba(191,149,63,0.06)');
-        grad.addColorStop(1, 'rgba(5,5,5,0)');
-        heroCtx.fillStyle = grad;
-        heroCtx.fillRect(0, 0, HW, HH);
+        const ts = Math.min(now - lastTime, 100) / 16.66; lastTime = now;
+        heroCtx.fillStyle = '#050505'; heroCtx.fillRect(0, 0, HW, HH);
+        const grad = heroCtx.createRadialGradient(HW*0.5, HH*0.5, 0, HW*0.5, HH*0.5, Math.max(HW, HH)*0.6);
+        grad.addColorStop(0, 'rgba(191,149,63,0.06)'); grad.addColorStop(1, 'rgba(5,5,5,0)');
+        heroCtx.fillStyle = grad; heroCtx.fillRect(0, 0, HW, HH);
         heroDust.forEach(d => { d.update(ts); d.draw(heroCtx); });
 
-        // Artists: прозрачный (clearRect)
         artCtx.clearRect(0, 0, AW, AH);
         artistsDust.forEach(d => { d.update(ts); d.draw(artCtx); });
-
         rafId = requestAnimationFrame(animateAll);
     }
 
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            cancelAnimationFrame(rafId);
-        } else {
-            lastTime = performance.now();
-            rafId = requestAnimationFrame(animateAll);
-        }
-    });
-
-    // ==== ФАЙЛ: cursor.js ====
-    const cursor     = document.getElementById('cursor');
-    const cursorRing = document.getElementById('cursor-ring');
+    // ==== Cursor & Header ====
+    const cursor = document.getElementById('cursor'), cursorRing = document.getElementById('cursor-ring');
     let cx = -100, cy = -100, rx = -100, ry = -100;
-
-    document.addEventListener('mousemove', e => {
-        cx = e.clientX; cy = e.clientY;
-    });
-
+    document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
     (function cursorLoop() {
-        // Курсор — точный, кольцо — с лагом
-        cursor.style.left     = cx + 'px';
-        cursor.style.top      = cy + 'px';
-        rx += (cx - rx) * 0.15;
-        ry += (cy - ry) * 0.15;
-        cursorRing.style.left = rx + 'px';
-        cursorRing.style.top  = ry + 'px';
+        cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px';
+        rx += (cx - rx) * 0.15; ry += (cy - ry) * 0.15;
+        cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
         requestAnimationFrame(cursorLoop);
     })();
+    window.addEventListener('scroll', () => document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50), { passive: true });
 
-    // ==== ФАЙЛ: header.js ====
-    const headerEl = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-        headerEl.classList.toggle('scrolled', window.scrollY > 50);
-    }, { passive: true });
-
-    // ==== ФАЙЛ: artists.js ====
+    // ==== Renders ====
     async function renderArtists() {
         const grid = document.getElementById('artists-grid');
-        if (!grid) return;
-
         try {
             const artists = await fetchData('artists');
-            grid.innerHTML = '';
-
-            // Сначала главный артист, потом остальные
-            const main   = artists.filter(a => a.is_main);
-            const others = artists.filter(a => !a.is_main);
-            const sorted = [...main, ...others];
-
-            sorted.forEach(artist => {
-                const card = document.createElement('div');
-                card.className = 'artist-card reveal' + (artist.is_main ? ' main' : '');
-
-                const imgWrap = document.createElement('div');
-                imgWrap.className = 'artist-img-wrap';
-
+            artists.forEach(artist => {
+                const card = document.createElement('div'); card.className = 'artist-card reveal';
+                const imgWrap = document.createElement('div'); imgWrap.className = 'artist-img-wrap';
                 const img = document.createElement('img');
-                img.src     = artist.photo_url || '';
-                img.alt     = artist.name || '';
-                img.loading = 'lazy';
-                img.className = 'artist-img';
-                img.draggable = false;
+                img.className = 'artist-img'; img.loading = 'lazy'; img.alt = artist.name;
+                
+                // ЗАЩИТА ОТ ПРОТУХШИХ ССЫЛОК ИНСТАГРАМА
+                img.onerror = () => { 
+                    img.onerror = null; // предотвращает бесконечный цикл
+                    img.src = `https://placehold.co/400x533/0f0f0f/c9a84c?text=${encodeURIComponent(artist.name)}&font=Montserrat`; 
+                };
+                img.src = artist.photo_url || '';
 
-                const overlay = document.createElement('div');
-                overlay.className = 'artist-overlay';
-
-                const info = document.createElement('div');
-                info.className = 'artist-info';
-
-                if (artist.is_main) {
-                    const badge = document.createElement('span');
-                    badge.className = 'artist-badge';
-                    badge.textContent = 'Главный артист';
-                    info.appendChild(badge);
-                }
-
-                const name = document.createElement('h3');
-                name.className = 'artist-name';
-                name.textContent = artist.name || '';
-                info.appendChild(name);
-
-                imgWrap.appendChild(img);
-                card.appendChild(imgWrap);
-                card.appendChild(overlay);
-                card.appendChild(info);
-                grid.appendChild(card);
+                const overlay = document.createElement('div'); overlay.className = 'artist-overlay';
+                const info = document.createElement('div'); info.className = 'artist-info';
+                const name = document.createElement('h3'); name.className = 'artist-name'; name.textContent = artist.name;
+                
+                info.appendChild(name); imgWrap.appendChild(img); card.append(imgWrap, overlay, info); grid.appendChild(card);
             });
-
-            // Статичный слот "Добавить артиста"
-            const addCard = document.createElement('div');
-            addCard.className = 'artist-card add-slot reveal';
-            addCard.innerHTML = `
-                <div class="add-slot-inner">
-                    <div class="add-slot-icon"><i class="fa-solid fa-plus"></i></div>
-                    <p class="add-slot-text">Добавить артиста</p>
-                </div>`;
+            const addCard = document.createElement('div'); addCard.className = 'artist-card add-slot reveal';
+            addCard.innerHTML = `<div class="add-slot-inner"><div class="add-slot-icon"><i class="fa-solid fa-plus"></i></div><p class="add-slot-text">Добавить артиста</p></div>`;
             grid.appendChild(addCard);
-
-        } catch (err) {
-            console.error('renderArtists:', err);
-        }
+        } catch (e) {}
     }
-
-    // ==== ФАЙЛ: services.js ====
-    const SERVICE_ICONS = {
-        'fa-solid fa-microphone': 'fa-solid fa-microphone',
-        'fa-solid fa-globe':      'fa-solid fa-globe',
-        'fa-solid fa-sliders':    'fa-solid fa-sliders',
-        'fa-solid fa-chart-line': 'fa-solid fa-chart-line'
-    };
 
     async function renderServices() {
         const grid = document.getElementById('services-grid');
-        if (!grid) return;
-
         try {
             const services = await fetchData('services');
-            grid.innerHTML = '';
-
-            services.forEach((service, i) => {
-                const card = document.createElement('div');
-                card.className = 'service-card reveal';
-
-                const numEl = document.createElement('p');
-                numEl.className = 'service-num';
-                numEl.textContent = String(i + 1).padStart(2, '0');
-
-                const iconWrap = document.createElement('div');
-                iconWrap.className = 'service-icon-wrap';
-                const iconEl = document.createElement('i');
-                const safeClass = (service.icon || 'fa-solid fa-star').replace(/[^a-zA-Z0-9\-\s]/g, '');
-                iconEl.className = safeClass + ' service-icon';
-                iconEl.setAttribute('aria-hidden', 'true');
-                iconWrap.appendChild(iconEl);
-
-                const titleEl = document.createElement('h3');
-                titleEl.className = 'service-title';
-                titleEl.textContent = service.title || '';
-
-                const descEl = document.createElement('p');
-                descEl.className = 'service-desc';
-                descEl.textContent = service.description || '';
-
-                card.appendChild(numEl);
-                card.appendChild(iconWrap);
-                card.appendChild(titleEl);
-                card.appendChild(descEl);
+            services.forEach((s, i) => {
+                const card = document.createElement('div'); card.className = 'service-card reveal';
+                card.innerHTML = `<p class="service-num">${String(i+1).padStart(2,'0')}</p><div class="service-icon-wrap"><i class="${s.icon} service-icon"></i></div><h3 class="service-title">${s.title}</h3><p class="service-desc">${s.description}</p>`;
                 grid.appendChild(card);
             });
-
-        } catch (err) {
-            console.error('renderServices:', err);
-        }
+        } catch (e) {}
     }
 
-    // ==== ФАЙЛ: contacts.js ====
-    async function renderContacts() {
-        const list = document.getElementById('contacts-list');
-        if (!list) return;
-
+    async function renderContactsAndSocials() {
         try {
-            const settingsArr = await fetchData('settings');
-            const s = {};
-            settingsArr.forEach(row => { s[row.key] = row.value; });
-
-            const items = [
-                { icon: 'fa-solid fa-location-dot', label: 'Адрес 1',   value: s.address_1 || '',              href: null },
-                { icon: 'fa-solid fa-location-dot', label: 'Адрес 2',   value: s.address_2 || '',              href: null },
-                { icon: 'fa-solid fa-phone',        label: 'Телефон',   value: s.phone     || '',              href: `tel:${(s.phone||'').replace(/\s/g,'')}` },
-                { icon: 'fa-solid fa-envelope',     label: 'Email',     value: s.email     || '',              href: `mailto:${s.email||''}` },
-            ];
-
-            list.innerHTML = '';
-            items.forEach(item => {
-                if (!item.value) return;
-
-                const li = document.createElement('li');
-                li.className = 'contacts-item';
-
-                const iconEl = document.createElement('div');
-                iconEl.className = 'contact-icon';
-                iconEl.innerHTML = `<i class="${item.icon.replace(/[^a-zA-Z0-9\-\s]/g,'')}"></i>`;
-
-                const body = document.createElement('div');
-                const label = document.createElement('p');
-                label.className = 'contact-label';
-                label.textContent = item.label;
-
-                let valueEl;
-                if (item.href) {
-                    valueEl = document.createElement('a');
-                    valueEl.href = item.href;
-                    valueEl.className = 'contact-value';
-                } else {
-                    valueEl = document.createElement('p');
-                    valueEl.className = 'contact-value';
-                }
-                valueEl.textContent = item.value;
-
-                body.appendChild(label);
-                body.appendChild(valueEl);
-                li.appendChild(iconEl);
-                li.appendChild(body);
-                list.appendChild(li);
+            const [settings, socials] = await Promise.all([fetchData('settings'), fetchData('socials')]);
+            const s = {}; settings.forEach(r => s[r.key] = r.value);
+            
+            const cList = document.getElementById('contacts-list');
+            [{i: 'fa-location-dot', l: 'Адрес 1', v: s.address_1}, {i: 'fa-location-dot', l: 'Адрес 2', v: s.address_2}, {i: 'fa-phone', l: 'Телефон', v: s.phone, h: `tel:${(s.phone||'').replace(/\s/g,'')}`}, {i: 'fa-envelope', l: 'Email', v: s.email, h: `mailto:${s.email}`}].forEach(item => {
+                if(!item.v) return;
+                const li = document.createElement('li'); li.className = 'contacts-item';
+                li.innerHTML = `<div class="contact-icon"><i class="fa-solid ${item.i}"></i></div><div><p class="contact-label">${item.l}</p>${item.h ? `<a href="${item.h}" class="contact-value">${item.v}</a>` : `<p class="contact-value">${item.v}</p>`}</div>`;
+                cList.appendChild(li);
             });
 
-        } catch (err) {
-            console.error('renderContacts:', err);
-        }
-    }
-
-    // ==== ФАЙЛ: socials.js ====
-    async function renderSocials() {
-        const listEl = document.getElementById('socials-list');
-        if (!listEl) return;
-
-        try {
-            const socials = await fetchData('socials');
-            listEl.innerHTML = '';
-
-            socials.forEach(social => {
-                const a = document.createElement('a');
-                a.href   = social.url || '#';
-                a.target = '_blank';
-                a.rel    = 'noopener noreferrer';
-                a.className = 'social-link';
-
-                const iconWrap = document.createElement('div');
-                iconWrap.className = 'social-icon-wrap';
-                const icon = document.createElement('i');
-                const safeIcon = (social.icon || 'fa-solid fa-link').replace(/[^a-zA-Z0-9\-\s]/g, '');
-                icon.className = safeIcon;
-                icon.setAttribute('aria-hidden', 'true');
-                iconWrap.appendChild(icon);
-
-                const info = document.createElement('div');
-                info.className = 'social-info';
-                const name = document.createElement('p');
-                name.className = 'social-name';
-                name.textContent = social.name || '';
-                const handle = document.createElement('p');
-                handle.className = 'social-handle';
-                handle.textContent = social.handle ? '@' + social.handle : '';
-                info.appendChild(name);
-                info.appendChild(handle);
-
-                const arrow = document.createElement('i');
-                arrow.className = 'fa-solid fa-arrow-right social-arrow';
-
-                a.appendChild(iconWrap);
-                a.appendChild(info);
-                a.appendChild(arrow);
-                listEl.appendChild(a);
+            const sList = document.getElementById('socials-list');
+            socials.forEach(soc => {
+                const a = document.createElement('a'); a.className = 'social-link'; a.href = soc.url; a.target = '_blank';
+                a.innerHTML = `<div class="social-icon-wrap"><i class="${soc.icon}"></i></div><div class="social-info"><p class="social-name">${soc.name}</p><p class="social-handle">@${soc.handle}</p></div><i class="fa-solid fa-arrow-right social-arrow"></i>`;
+                sList.appendChild(a);
             });
-
-        } catch (err) {
-            console.error('renderSocials:', err);
-        }
+        } catch (e) {}
     }
 
-    // ==== ФАЙЛ: reveal.js ====
-    // IntersectionObserver — анимации появления при скролле
-    function initReveal() {
-        const els = document.querySelectorAll('.reveal, .reveal-left');
-        if (!els.length) return;
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    // Небольшая задержка для каскадного появления
-                    setTimeout(() => {
-                        entry.target.classList.add('active');
-                    }, i * 60);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12 });
-
-        els.forEach(el => observer.observe(el));
-    }
-
-    // ==== ФАЙЛ: main.js ====
-    // Инициализация — всё параллельно, reveal после
-
+    // ==== Init ====
     async function init() {
-        // Canvas сразу — не зависит от данных
-        resizeHero();
-        resizeArtists();
-        rafId = requestAnimationFrame(animateAll);
-
-        // Данные параллельно
-        await Promise.allSettled([
-            renderArtists(),
-            renderServices(),
-            renderContacts(),
-            renderSocials()
-        ]);
-
-        // После загрузки данных — перемеряем artists canvas (карточки добавлены)
-        resizeArtists();
-
-        // Reveal-анимации после того как всё в DOM
-        initReveal();
+        resizeCanvas(); rafId = requestAnimationFrame(animateAll);
+        await Promise.allSettled([renderArtists(), renderServices(), renderContactsAndSocials()]);
+        resizeCanvas();
+        const obs = new IntersectionObserver(e => e.forEach((en, i) => { if(en.isIntersecting) { setTimeout(() => en.target.classList.add('active'), i*60); obs.unobserve(en.target); } }), { threshold: 0.12 });
+        document.querySelectorAll('.reveal, .reveal-scale').forEach(el => obs.observe(el));
     }
 
-    // Resize с debounce
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            resizeHero();
-            resizeArtists();
-        }, 250);
-    }, { passive: true });
-
-    // Запускаем
+    let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resizeCanvas, 250); });
     document.addEventListener('DOMContentLoaded', init);
-
+    document.addEventListener('visibilitychange', () => document.hidden ? cancelAnimationFrame(rafId) : (lastTime = performance.now(), rafId = requestAnimationFrame(animateAll)));
     </script>
 </body>
 </html>
