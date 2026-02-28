@@ -1,12 +1,12 @@
 // ============================================================
-//  main.js — Golden Sound v3.0
-//  Точка входа. Запускает рендеринг, анимации, UX-логику.
-//  Данные: MOCK_DB (config.js) или Supabase — USE_SUPABASE.
+//  main.js — Golden Sound v4.0
+//  Точка входа. RAF-цикл, UX-логика, координация модулей.
 //
-//  Новое по сравнению с v2.0:
-//  • Подсветка активного пункта навигации при скролле
-//  • Header.scrolled — чуть темнее после первых 20px
-//  • Передача координат мыши в StarlightSystem (параллакс)
+//  Новое в v4.0:
+//  • setHeroMouse / clearHeroMouse → HeroParticleSystem
+//  • Параллакс мыши для секции Артистов
+//  • Подсветка активного пункта nav
+//  • Header.scrolled
 // ============================================================
 
 import { renderArtists, getSwiperInstance } from './artists.js';
@@ -16,6 +16,8 @@ import {
     initStars,
     animateStars,
     setCanvasMousePosition,
+    setHeroMouse,
+    clearHeroMouse,
 } from './canvas.js';
 import { initReveal } from './animations.js';
 import {
@@ -26,17 +28,17 @@ import {
     renderSiteConfig,
 } from './content.js';
 
-// ─── Константы ───────────────────────────────────────────────
-const prefersReducedMotion = false; // принудительно включаем анимации
+// ── Константы ─────────────────────────────────────────────
+const prefersReducedMotion = false;
 
-// ─── Состояние ───────────────────────────────────────────────
+// ── Состояние RAF ─────────────────────────────────────────
 let lenis       = null;
 let globalRafId = null;
 let lastTime    = performance.now();
 
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 //  LENIS — плавный скролл
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 if (!prefersReducedMotion) {
     try {
         lenis = new Lenis({
@@ -46,18 +48,18 @@ if (!prefersReducedMotion) {
             touchMultiplier: 2,
         });
     } catch (e) {
-        console.warn('Lenis недоступен, используем нативный скролл.');
+        console.warn('Lenis недоступен, нативный скролл.');
         lenis = null;
     }
 }
 
-// ═══════════════════════════════════════════════════════════
-//  RENDER LOOP — единый RAF: canvas + lenis
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+//  RENDER LOOP — единый RAF
+// ══════════════════════════════════════════════════════════
 function renderLoop(time) {
     let dt = time - lastTime;
     lastTime = time;
-    if (dt > 100) dt = 16.6; // cap после tab-switch / долгого фрейма
+    if (dt > 100) dt = 16.6; // cap после tab-switch
 
     if (!prefersReducedMotion) {
         if (lenis) lenis.raf(time);
@@ -68,9 +70,9 @@ function renderLoop(time) {
     globalRafId = requestAnimationFrame(renderLoop);
 }
 
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 //  VISIBILITY — пауза при неактивной вкладке
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         cancelAnimationFrame(globalRafId);
@@ -80,9 +82,9 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// ═══════════════════════════════════════════════════════════
-//  RESIZE — debounced
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+//  RESIZE — debounced 250ms
+// ══════════════════════════════════════════════════════════
 let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
@@ -94,19 +96,21 @@ window.addEventListener('resize', () => {
     }, 250);
 }, { passive: true });
 
-// ═══════════════════════════════════════════════════════════
-//  HEADER — становится плотнее после скролла
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+//  HEADER — класс .scrolled после первых 24px
+// ══════════════════════════════════════════════════════════
 const headerEl = document.querySelector('.header');
 if (headerEl) {
-    window.addEventListener('scroll', () => {
+    const onScroll = () => {
         headerEl.classList.toggle('scrolled', window.scrollY > 24);
-    }, { passive: true });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // применяем сразу при загрузке
 }
 
-// ═══════════════════════════════════════════════════════════
-//  ACTIVE NAV — подсвечиваем текущую секцию
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+//  ACTIVE NAV — подсвечиваем секцию в центре viewport
+// ══════════════════════════════════════════════════════════
 const navLinks = document.querySelectorAll('.header-nav a[href^="#"]');
 const sections  = document.querySelectorAll('section[id]');
 
@@ -120,18 +124,34 @@ if (navLinks.length && sections.length) {
             });
         });
     }, {
-        threshold:    0,
-        rootMargin:   '-40% 0px -40% 0px', // срабатывает когда секция в центре экрана
+        threshold:   0,
+        rootMargin: '-40% 0px -40% 0px',
     });
     sections.forEach(s => navObserver.observe(s));
 }
 
-// ═══════════════════════════════════════════════════════════
-//  ПАРАЛЛАКС МЫШИ — секция Артистов
-//  Только на не-тач устройствах (десктоп)
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+//  HERO MOUSE — интерактивные частицы
+//  pointer-events: none на canvas → слушаем секцию
+// ══════════════════════════════════════════════════════════
+const heroSec = document.querySelector('.hero');
+const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+if (heroSec && !isTouch) {
+    heroSec.addEventListener('mousemove', (e) => {
+        const rect = heroSec.getBoundingClientRect();
+        setHeroMouse(e.clientX - rect.left, e.clientY - rect.top);
+    }, { passive: true });
+
+    heroSec.addEventListener('mouseleave', () => {
+        clearHeroMouse();
+    }, { passive: true });
+}
+
+// ══════════════════════════════════════════════════════════
+//  ARTISTS PARALLAX — передаём мышь в StarlightCometSystem
+// ══════════════════════════════════════════════════════════
 const artistsSec = document.getElementById('artists');
-const isTouch    = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 if (artistsSec && !isTouch) {
     artistsSec.addEventListener('mousemove', (e) => {
@@ -140,13 +160,13 @@ if (artistsSec && !isTouch) {
     }, { passive: true });
 
     artistsSec.addEventListener('mouseleave', () => {
-        setCanvasMousePosition(-1, -1); // вернуть в центр
+        setCanvasMousePosition(-1, -1);
     }, { passive: true });
 }
 
-// ═══════════════════════════════════════════════════════════
-//  ЗАПУСК Canvas сразу (до рендера контента)
-// ═══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+//  ЗАПУСК Canvas сразу (до рендера динамического контента)
+// ══════════════════════════════════════════════════════════
 resizeCanvas(prefersReducedMotion);
 initStars(prefersReducedMotion);
 
@@ -154,12 +174,12 @@ if (!prefersReducedMotion) {
     globalRafId = requestAnimationFrame(renderLoop);
 }
 
-// ═══════════════════════════════════════════════════════════
-//  ПОСЛЕДОВАТЕЛЬНОСТЬ ЗАГРУЗКИ:
+// ══════════════════════════════════════════════════════════
+//  ПОРЯДОК ЗАГРУЗКИ КОНТЕНТА:
 //  1. Параллельный рендер всего контента
-//  2. Статичные тексты (заголовки, футер)
-//  3. Пересчёт canvas (секции теперь заполнены) + reveal
-// ═══════════════════════════════════════════════════════════
+//  2. Тексты из конфига/БД
+//  3. Пересчёт canvas (секции заполнены) + reveal-анимации
+// ══════════════════════════════════════════════════════════
 Promise.allSettled([
     renderArtists(),
     renderSocials(),
