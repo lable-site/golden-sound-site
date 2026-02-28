@@ -6,13 +6,13 @@
     <meta name="description" content="Golden Sound — Музыкальный лейбл. Звукозапись, продюсирование, дистрибьюция.">
     <meta property="og:title"       content="GOLDEN SOUND | Музыкальный лейбл">
     <meta property="og:description" content="Мы обречены на успех.">
-    <meta property="og:image"       content="https://i1.sndcdn.com/avatars-GsePNi7tuSUlvHXr-O9jXFw-t240x240.jpg">
+    <meta property="og:image"       content="https://lable-site.github.io/golden-sound-site/gslogo.png">
     <meta property="og:type"        content="website">
     <meta name="theme-color"        content="#030303">
     <title>GOLDEN SOUND | Музыкальный лейбл</title>
 
-    <link rel="icon"             type="image/jpeg" href="https://i1.sndcdn.com/avatars-GsePNi7tuSUlvHXr-O9jXFw-t240x240.jpg">
-    <link rel="apple-touch-icon" sizes="180x180"   href="https://i1.sndcdn.com/avatars-GsePNi7tuSUlvHXr-O9jXFw-t240x240.jpg">
+    <link rel="icon"             type="image/png" href="./gslogo.png">
+    <link rel="apple-touch-icon" sizes="180x180"  href="./gslogo.png">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,12 +31,12 @@
          ╚════════════════════════════╝ -->
     <header class="header">
         <a href="#" class="header-logo" aria-label="Golden Sound — главная">
+            <!-- ИЗМЕНЕНИЕ: новый логотип gslogo.png -->
             <img
-                src="https://i1.sndcdn.com/avatars-GsePNi7tuSUlvHXr-O9jXFw-t240x240.jpg"
+                src="./gslogo.png"
                 alt="Golden Sound"
                 class="logo-img"
             >
-            <!-- ИЗМЕНЕНИЕ: добавлен текст логотипа -->
             <span class="header-logo-text">GOLDEN SOUND</span>
         </a>
 
@@ -46,7 +46,6 @@
             <a href="#contacts">Контакты</a>
         </nav>
 
-        <!-- ИЗМЕНЕНИЕ: стиль Liquid Glass -->
         <a href="mailto:gsp.sound@mail.ru"
            class="btn-primary"
            aria-label="Отправить демо">ОТПРАВИТЬ ДЕМО</a>
@@ -56,25 +55,25 @@
          ║           HERO            ║
          ╚════════════════════════════╝ -->
     <section class="hero" id="about">
-        <!-- НОВОЕ: GS-логотип из частиц -->
+        <!-- Canvas с интерактивными частицами -->
         <canvas id="hero-canvas" aria-hidden="true"></canvas>
         <div class="hero-vignette" aria-hidden="true"></div>
         <div class="hero-content">
             <h1 class="hero-title">
-                <span class="hero-title-line">GOLDEN</span>
+                <!-- ИЗМЕНЕНИЕ: оба слова золотые + shine-анимация -->
+                <span class="hero-title-line hero-title-gold">GOLDEN</span>
                 <span class="hero-title-line hero-title-gold">SOUND</span>
             </h1>
             <p class="hero-tagline">«Мы обречены на успех»</p>
         </div>
-        <!-- ИЗМЕНЕНИЕ: убран scroll-hint -->
     </section>
 
     <!-- ╔════════════════════════════╗
          ║         АРТИСТЫ           ║
          ╚════════════════════════════╝ -->
     <section class="section artists-section" id="artists">
-        <!-- ИЗМЕНЕНИЕ: z-index фикс — канвас строго на фоне -->
-        <canvas class="stars-canvas-bg" data-style="starlight" aria-hidden="true"></canvas>
+        <!-- Starlight + диагональные кометы -->
+        <canvas class="stars-canvas-bg" data-style="starlight-comet" aria-hidden="true"></canvas>
 
         <div class="section-header reveal">
             <h2 class="section-title">
@@ -106,8 +105,7 @@
 
     <!-- ╔════════════════════════════╗
          ║         СТАТИСТИКА        ║
-         ╚════════════════════════════╝
-         ИЗМЕНЕНИЕ: отдельный блок с собственным Liquid Glass -->
+         ╚════════════════════════════╝ -->
     <section class="section stats-section" id="stats">
         <canvas class="stars-canvas-bg" data-style="starlight" data-density="light" aria-hidden="true"></canvas>
         <div class="stats-glass-wrap">
@@ -130,8 +128,7 @@
 
     <!-- ╔════════════════════════════╗
          ║         КОНТАКТЫ          ║
-         ╚════════════════════════════╝
-         ИЗМЕНЕНИЕ: горизонтально, Liquid Glass, статусные заголовки -->
+         ╚════════════════════════════╝ -->
     <section class="section contacts-section" id="contacts">
         <canvas class="stars-canvas-bg" data-style="nebula" aria-hidden="true"></canvas>
 
@@ -143,13 +140,11 @@
         </div>
 
         <div class="contacts-grid">
-            <!-- ИЗМЕНЕНИЕ: "Ждём вас" → "Офис" -->
             <div class="contacts-box reveal">
                 <h3 class="contacts-box-title">Офис</h3>
                 <ul class="contacts-list" id="contacts-list"></ul>
             </div>
 
-            <!-- ИЗМЕНЕНИЕ: "Мы в сети" → "Связь" -->
             <div class="contacts-box reveal">
                 <h3 class="contacts-box-title">Связь</h3>
                 <div class="contacts-social-list" id="contacts-social-list"></div>
@@ -159,8 +154,7 @@
 
     <!-- ╔════════════════════════════╗
          ║           FOOTER          ║
-         ╚════════════════════════════╝
-         ИЗМЕНЕНИЕ: убрана секция "ПОДПИСЫВАЙТЕСЬ", только чистый футер -->
+         ╚════════════════════════════╝ -->
     <footer>
         <div id="footer-copyright">© 2026 Golden Sound. All rights reserved.</div>
         <div id="footer-tagline">Москва, Россия</div>
