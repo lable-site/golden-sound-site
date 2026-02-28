@@ -1,0 +1,1113 @@
+/* ============================================================
+   GOLDEN SOUND — styles.css v3.0 — LIQUID GLASS EDITION
+   Тема: luxury minimal / liquid glass dark
+   Акцент: золото #c9a84c
+   Шрифты: Syncopate (заголовки) / Inter (текст)
+
+   ИЗМЕНЕНИЯ v3.0:
+   • services-grid → repeat(4,1fr) — фикс переноса 4-й карточки
+   • .header.scrolled — усиленный blur при скролле
+   • .header-nav a.active — подсветка активного пункта меню
+============================================================ */
+
+/* ---- CSS-переменные ---- */
+:root {
+    --black:       #030303;
+    --black-warm:  #0a0800;
+    --gold:        #c9a84c;
+    --gold-light:  #f0d88a;
+    --gold-dark:   #8a6a1a;
+    --gold-glow:   rgba(201, 168, 76, 0.28);
+    --gold-subtle: rgba(201, 168, 76, 0.10);
+    --gold-border: rgba(201, 168, 76, 0.18);
+
+    /* Liquid Glass переменные */
+    --glass-bg:          rgba(10, 8, 2, 0.40);
+    --glass-bg-strong:   rgba(10, 8, 2, 0.65);
+    --glass-hi:          rgba(201, 168, 76, 0.06);
+    --glass-blur:        blur(16px) saturate(160%);
+    --glass-border:      rgba(255, 255, 255, 0.08);
+    --glass-border-gold: rgba(201, 168, 76, 0.22);
+    --glass-inset:       inset 0 1px 0 rgba(255,255,255,0.06),
+                         inset 0 -1px 0 rgba(0,0,0,0.20);
+
+    --text:        #ffffff;
+    --text-dim:    rgba(255, 255, 255, 0.55);
+    --text-ghost:  rgba(255, 255, 255, 0.25);
+
+    --grad-gold: linear-gradient(135deg,
+        #8a6a1a 0%,
+        #c9a84c 28%,
+        #f0d060 52%,
+        #b38728 76%,
+        #f0d88a 100%
+    );
+
+    --ease:    cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+    --pad-x:    5%;
+    --sec-pad:  120px 0;
+    --hdr-gap:  60px;
+    --hdr-gapm: 40px;
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { background: var(--black); scroll-behavior: auto; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
+    background:
+        radial-gradient(ellipse 80% 50% at 50% 0%,   rgba(60,42,5,0.55)  0%, transparent 60%),
+        radial-gradient(ellipse 55% 40% at 90% 100%,  rgba(35,24,2,0.50)  0%, transparent 55%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, #0d0a02 0%, var(--black) 70%);
+}
+
+::-webkit-scrollbar         { width: 6px; }
+::-webkit-scrollbar-track   { background: var(--black); }
+::-webkit-scrollbar-thumb   { background: #2a1e04; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+img { display: block; max-width: 100%; }
+a   { text-decoration: none; color: inherit; }
+
+.page-wrapper { position: relative; width: 100%; overflow: hidden; }
+.reveal       { will-change: transform, opacity; }
+
+/* ============================================================
+   ХЕДЕР — Liquid Glass
+============================================================ */
+.header {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--pad-x);
+    z-index: 9999;
+    background: rgba(3, 3, 3, 0.50);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border-gold);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.40);
+    transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+/* Чуть темнее и плотнее после начала скролла */
+.header.scrolled {
+    background: rgba(3, 3, 3, 0.78);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05), 0 12px 40px rgba(0,0,0,0.55);
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    transition: transform 0.4s var(--ease), opacity 0.4s;
+}
+.header-logo:hover { opacity: 0.82; transform: scale(1.02); }
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201, 168, 76, 0.55);
+    box-shadow: 0 0 12px rgba(201, 168, 76, 0.18);
+    flex-shrink: 0;
+}
+
+.header-logo-text {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.header-nav {
+    display: flex;
+    gap: 44px;
+}
+
+.header-nav a {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    position: relative;
+    transition: color 0.3s;
+}
+.header-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 50%;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transform: translateX(-50%);
+    transition: width 0.35s var(--ease);
+}
+.header-nav a:hover,
+.header-nav a.active        { color: var(--gold); }
+.header-nav a:hover::after,
+.header-nav a.active::after { width: 100%; }
+
+/* ============================================================
+   КНОПКА — Liquid Glass
+============================================================ */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 26px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--gold-light);
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid var(--glass-border-gold);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow: var(--glass-inset), 0 4px 16px rgba(201,168,76,0.10);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 44px;
+    min-height: 44px;
+    transition: all 0.35s var(--ease);
+    position: relative;
+    overflow: hidden;
+}
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, transparent 60%);
+    border-radius: inherit;
+    pointer-events: none;
+}
+.btn-primary:hover {
+    background: rgba(201, 168, 76, 0.14);
+    border-color: rgba(201, 168, 76, 0.45);
+    transform: translateY(-2px);
+    box-shadow:
+        var(--glass-inset),
+        0 8px 28px rgba(201,168,76,0.20),
+        0 0 0 1px rgba(201,168,76,0.12);
+    color: #fff;
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 80px;
+    background:
+        radial-gradient(ellipse 60% 55% at 50% 50%,
+            rgba(60,42,5,0.30) 0%, transparent 70%),
+        var(--black);
+    overflow: hidden;
+}
+
+#hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 90% 90% at 50% 50%,
+        transparent 40%, rgba(3,3,3,0.80) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+    height: 0;
+    background: linear-gradient(to bottom,
+        transparent 0%, rgba(201,168,76,0.25) 50%, transparent 100%);
+    animation: heroLine 2s var(--ease) 0.2s forwards;
+    z-index: 1;
+}
+@keyframes heroLine { to { height: 45vh; } }
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 24px;
+    max-width: 1000px;
+}
+
+.hero-title {
+    font-family: 'Syncopate', sans-serif;
+    font-size: clamp(52px, 11vw, 140px);
+    font-weight: 700;
+    line-height: 0.96;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.hero-title-line {
+    display: block;
+    color: #ffffff;
+    opacity: 0;
+    transform: translateY(60px);
+    animation: heroWord 0.9s var(--ease) forwards;
+}
+.hero-title-line:nth-child(2) { animation-delay: 0.18s; }
+
+.hero-title-gold {
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding-bottom: 6px;
+}
+@keyframes heroWord { to { opacity: 1; transform: translateY(0); } }
+
+.hero-tagline {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(15px, 1.8vw, 20px);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    opacity: 0;
+    animation: heroFade 1s var(--ease) 0.6s forwards;
+}
+@keyframes heroFade { to { opacity: 1; } }
+
+/* ============================================================
+   ОБЩИЕ СЕКЦИИ
+============================================================ */
+.section {
+    position: relative;
+    width: 100%;
+    padding: var(--sec-pad);
+    z-index: 10;
+    isolation: isolate;
+}
+
+#services-canvas,
+.stars-canvas-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.section-header,
+.services-grid,
+.stats-glass-wrap,
+.contacts-grid {
+    position: relative;
+    z-index: 10;
+}
+
+.section-header {
+    padding: 0 var(--pad-x) var(--hdr-gap);
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-family: 'Syncopate', sans-serif;
+    font-size: clamp(26px, 4.2vw, 56px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.header-icon {
+    color: var(--gold);
+    font-size: 0.72em;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   СЕКЦИЯ АРТИСТОВ
+============================================================ */
+.artists-section { overflow: visible; }
+
+.artists-section .stars-canvas-bg { z-index: 0; }
+
+.artistSwiper {
+    width: 100%;
+    position: relative;
+    z-index: 5;
+    padding-top: 20px !important;
+    padding-bottom: 70px !important;
+    padding-left: max(var(--pad-x), calc((100vw - 1600px) / 2 + 5vw)) !important;
+    padding-right: var(--pad-x) !important;
+}
+.artistSwiper.swiper { overflow: visible !important; }
+
+.swiper-slide {
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.6s var(--ease);
+    filter: grayscale(90%) brightness(0.22);
+    opacity: 0.45;
+    position: relative;
+    z-index: 1;
+}
+.swiper-slide-active {
+    filter: grayscale(0%) brightness(1);
+    opacity: 1;
+    z-index: 10;
+}
+
+.artist-card {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 3 / 4;
+    border-radius: 28px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--glass-border-gold);
+    background: var(--glass-bg);
+    transform: scale(0.83);
+    transition: 0.6s var(--ease);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.swiper-slide-active .artist-card {
+    transform: scale(1.06);
+    border-color: rgba(201,168,76,0.55);
+    box-shadow:
+        0 0 0 1px rgba(201,168,76,0.15),
+        0 0 30px 6px rgba(201,168,76,0.18),
+        0 0 70px 16px rgba(201,168,76,0.07),
+        0 24px 60px rgba(0,0,0,0.80);
+}
+
+.artist-card-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(201,168,76,0.03);
+    gap: 16px;
+}
+.artist-placeholder-icon {
+    width: 64px;
+    height: 64px;
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: rgba(201,168,76,0.45);
+    background: rgba(201,168,76,0.04);
+    transition: 0.4s var(--ease);
+}
+.swiper-slide-active .artist-placeholder-icon {
+    border-color: rgba(201,168,76,0.55);
+    color: var(--gold);
+    box-shadow: 0 0 20px rgba(201,168,76,0.15);
+}
+.artist-placeholder-label {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.20);
+}
+
+.artist-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 1.6s var(--ease), filter 0.6s;
+    filter: grayscale(10%);
+}
+.swiper-slide-active .artist-card img {
+    transform: scale(1.04);
+    filter: grayscale(0%);
+}
+
+.artist-card-glow {
+    position: absolute;
+    inset: -1px;
+    border-radius: 28px;
+    border: 1px solid rgba(201,168,76,0);
+    transition: border-color 0.6s var(--ease), box-shadow 0.6s;
+    pointer-events: none;
+    z-index: 4;
+}
+.swiper-slide-active .artist-card-glow {
+    border-color: rgba(201,168,76,0.45);
+    box-shadow: inset 0 0 20px rgba(201,168,76,0.06);
+}
+
+.artist-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+        160deg,
+        rgba(3,2,0,0.00)  0%,
+        rgba(3,2,0,0.15)  35%,
+        rgba(3,2,0,0.65)  65%,
+        rgba(3,2,0,0.97)  100%
+    );
+    pointer-events: none;
+}
+
+.artist-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 36px 24px 28px;
+    z-index: 3;
+    text-align: center;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.artist-name-line {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transition: width 0.8s var(--ease) 0.1s;
+    opacity: 0;
+}
+.swiper-slide-active .artist-name-line { width: 60%; opacity: 1; }
+
+.artist-info h3 {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #ffffff;
+    text-shadow: 0 4px 14px rgba(0,0,0,0.6);
+    transform: translateY(22px);
+    opacity: 0;
+    transition: 0.6s var(--ease);
+}
+.swiper-slide-active .artist-info h3 {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ============================================================
+   УСЛУГИ — Liquid Glass
+   FIX v3.0: repeat(4, 1fr) вместо auto-fit — 4 карточки в ряд
+============================================================ */
+#services {
+    background: linear-gradient(180deg, #030303 0%, #080602 100%);
+}
+
+.services-grid {
+    display: grid;
+    /* ✅ ФИКС: ровно 4 колонки на десктопе, никаких переносов */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 0 var(--pad-x);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.service-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.5s var(--ease);
+    min-height: 300px;
+    display: flex;
+    align-items: stretch;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border-gold);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-inset), 0 8px 32px rgba(0,0,0,0.40);
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,255,255,0.12) 30%,
+        rgba(201,168,76,0.20) 50%,
+        rgba(255,255,255,0.12) 70%,
+        transparent 100%
+    );
+    z-index: 1;
+}
+
+.service-card:hover {
+    border-color: rgba(201,168,76,0.40);
+    background: rgba(12,9,2,0.55);
+    transform: translateY(-8px);
+    box-shadow:
+        var(--glass-inset),
+        0 20px 60px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(201,168,76,0.10),
+        0 0 40px rgba(201,168,76,0.08);
+}
+
+.service-placeholder { cursor: default; }
+
+.service-slot-inner {
+    text-align: center;
+    padding: 50px 36px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+.service-slot-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 26px;
+    color: rgba(201,168,76,0.65);
+    background: rgba(201,168,76,0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        0 4px 16px rgba(201,168,76,0.08);
+    transition: all 0.4s var(--ease);
+}
+.service-card:hover .service-slot-icon {
+    border-color: var(--gold);
+    color: var(--gold);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        0 0 28px rgba(201,168,76,0.25),
+        0 4px 16px rgba(201,168,76,0.15);
+    transform: scale(1.08);
+}
+
+.service-slot-label {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 14px;
+    transition: color 0.3s;
+}
+.service-card:hover .service-slot-label { color: rgba(255,255,255,0.75); }
+
+.service-slot-hint {
+    font-size: 12px;
+    line-height: 1.8;
+    color: rgba(201,168,76,0.35);
+    transition: color 0.3s;
+}
+.service-card:hover .service-slot-hint { color: rgba(201,168,76,0.55); }
+
+.service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at 100% 100%,
+        rgba(201,168,76,0.06) 0%, transparent 70%);
+    border-radius: 0 0 20px 0;
+    pointer-events: none;
+}
+
+/* ============================================================
+   СТАТИСТИКА — Liquid Glass
+============================================================ */
+.stats-section {
+    padding: 90px 0 110px;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(201,168,76,0.02) 40%,
+        transparent 100%
+    );
+}
+
+.stats-glass-wrap {
+    padding: 0 var(--pad-x);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: rgba(201,168,76,0.08);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border-gold);
+    box-shadow: var(--glass-inset), 0 12px 48px rgba(0,0,0,0.50);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+.stat-card {
+    position: relative;
+    text-align: center;
+    padding: 52px 24px 44px;
+    background: rgba(10,8,2,0.45);
+    overflow: hidden;
+    transition: all 0.5s var(--ease);
+}
+.stat-card:hover { background: rgba(15,11,2,0.60); }
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 55%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+    opacity: 0.6;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 20%; right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent, rgba(255,255,255,0.10), transparent);
+}
+
+.stat-card:not(:last-child) {
+    border-right: 1px solid rgba(201,168,76,0.10);
+}
+
+.stat-number {
+    font-family: 'Syncopate', sans-serif;
+    font-size: clamp(38px, 5vw, 68px);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 16px;
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-ghost);
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================================
+   КОНТАКТЫ — горизонтально, Liquid Glass
+============================================================ */
+.contacts-section { z-index: 10; }
+
+.contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 0 var(--pad-x);
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+.contacts-box {
+    padding: 48px 44px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border-gold);
+    border-radius: 20px;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-inset), 0 12px 40px rgba(0,0,0,0.45);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s var(--ease);
+}
+.contacts-box:hover {
+    border-color: rgba(201,168,76,0.35);
+    box-shadow:
+        var(--glass-inset),
+        0 20px 60px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(201,168,76,0.08);
+}
+
+.contacts-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255,255,255,0.10),
+        rgba(201,168,76,0.15),
+        rgba(255,255,255,0.10),
+        transparent);
+    pointer-events: none;
+}
+
+.contacts-box::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at 100% 0%,
+        rgba(201,168,76,0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.contacts-box-title {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.30em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--glass-border-gold);
+    position: relative;
+    z-index: 1;
+}
+
+.contacts-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.contacts-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.contacts-item-icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--glass-border-gold);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 13px;
+    color: var(--gold);
+    background: rgba(201,168,76,0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
+    transition: all 0.3s;
+}
+.contacts-item:hover .contacts-item-icon {
+    border-color: rgba(201,168,76,0.50);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.10),
+        0 0 16px rgba(201,168,76,0.12);
+}
+
+.contacts-item-label {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--text-ghost);
+    margin-bottom: 6px;
+}
+
+.contacts-item-value {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.55;
+}
+
+.contacts-item-link { transition: color 0.3s; }
+.contacts-item-link:hover { color: var(--gold); }
+
+.contacts-social-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.contacts-social-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+    border: 1px solid var(--glass-border-gold);
+    border-radius: 14px;
+    background: rgba(10,8,2,0.30);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--glass-inset);
+    transition: all 0.4s var(--ease);
+    position: relative;
+    overflow: hidden;
+}
+.contacts-social-link::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent, rgba(255,255,255,0.08), transparent);
+}
+.contacts-social-link:hover {
+    background: rgba(201,168,76,0.06);
+    border-color: rgba(201,168,76,0.40);
+    transform: translateX(6px);
+    box-shadow:
+        var(--glass-inset),
+        0 8px 24px rgba(0,0,0,0.30),
+        0 0 0 1px rgba(201,168,76,0.08);
+}
+
+.contacts-social-icon {
+    font-size: 20px;
+    color: var(--gold);
+    width: 30px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.contacts-social-info { flex: 1; }
+
+.contacts-social-name {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+
+.contacts-social-handle {
+    font-size: 11px;
+    color: var(--text-dim);
+}
+
+.contacts-social-arrow {
+    font-size: 12px;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.4s var(--ease);
+}
+.contacts-social-link:hover .contacts-social-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ============================================================
+   ФУТЕР
+============================================================ */
+footer {
+    padding: 36px var(--pad-x);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--glass-border-gold);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-ghost);
+    background: rgba(3,3,3,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: relative;
+    z-index: 10;
+}
+
+/* ============================================================
+   REVEAL АНИМАЦИИ
+============================================================ */
+.reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================================
+   RESPONSIVE — мобильные (≤ 768px)
+============================================================ */
+@media (max-width: 768px) {
+    .header    { height: 70px; }
+    .header-nav { display: none; }
+    .header-logo-text { font-size: 11px; letter-spacing: 0.12em; }
+    .btn-primary { font-size: 9px; padding: 10px 16px; letter-spacing: 1.5px; }
+
+    .section-header { padding: 0 var(--pad-x) var(--hdr-gapm); }
+    .section-title  { font-size: clamp(22px, 7vw, 34px); gap: 14px; }
+
+    .artistSwiper {
+        padding-left:   0 !important;
+        padding-right:  0 !important;
+        padding-top:    10px !important;
+        padding-bottom: 50px !important;
+    }
+
+    .stats-grid { grid-template-columns: 1fr; gap: 2px; border-radius: 16px; }
+    .stats-section { padding: 50px 0 70px; }
+    .stat-card:not(:last-child) {
+        border-right: none;
+        border-bottom: 1px solid rgba(201,168,76,0.10);
+    }
+
+    .contacts-grid { grid-template-columns: 1fr; gap: 16px; }
+    .contacts-box  { padding: 32px 24px; border-radius: 16px; }
+
+    .artist-info h3 { font-size: 18px; }
+
+    /* На планшете/мобиле — 2 колонки для услуг */
+    .services-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .service-card { min-height: 240px; border-radius: 16px; }
+
+    footer { flex-direction: column; gap: 14px; text-align: center; }
+}
+
+/* ≤ 480px — 1 колонка для услуг */
+@media (max-width: 480px) {
+    :root { --sec-pad: 80px 0; }
+    .hero-title { font-size: clamp(40px, 13vw, 60px); }
+    .header-logo-text { display: none; }
+    .stats-section { padding: 40px 0 60px; }
+    .contacts-box { padding: 24px 18px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { min-height: 260px; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .artistSwiper {
+        padding-left:  calc(var(--pad-x) / 2) !important;
+        padding-right: calc(var(--pad-x) / 2) !important;
+    }
+    .contacts-grid { grid-template-columns: 1fr; }
+    .stats-grid    { grid-template-columns: repeat(3, 1fr); }
+    /* На планшете — 2 колонки для услуг */
+    .services-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 1024px) {
+    .swiper-slide    { justify-content: flex-start; }
+    .hero-content    { max-width: 1000px; }
+}
+@media (min-width: 1440px) {
+    .contacts-box       { padding: 60px 56px; }
+    .service-slot-inner { padding: 56px 40px; }
+}
+
+/* ============================================================
+   FALLBACK — браузеры без backdrop-filter
+============================================================ */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .header, .contacts-box, .btn-primary, .service-card,
+    .stat-card, .contacts-social-link { background: rgba(10,8,2,0.95); }
+}
+
+/* ============================================================
+   ДОСТУПНОСТЬ
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .hero-title-line, .hero-tagline, .hero-vignette {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .hero::before { animation: none !important; height: 45vh; }
+    .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}

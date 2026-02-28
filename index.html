@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Golden Sound — Музыкальный лейбл. Звукозапись, продюсирование, дистрибьюция.">
+    <meta property="og:title"       content="GOLDEN SOUND | Музыкальный лейбл">
+    <meta property="og:description" content="Мы обречены на успех.">
+    <meta property="og:image"       content="https://i1.sndcdn.com/avatars-GsePNi7tuSUlvHXr-O9jXFw-t240x240.jpg">
+    <meta property="og:type"        content="website">
+    <meta name="theme-color"        content="#030303">
+    <title>GOLDEN SOUND | Музыкальный лейбл</title>
+
+    <link rel="icon"             type="image/jpeg" href="https://i1.sndcdn.com/avatars-GsePNi7tuSUlvHXr-O9jXFw-t240x240.jpg">
+    <link rel="apple-touch-icon" sizes="180x180"   href="https://i1.sndcdn.com/avatars-GsePNi7tuSUlvHXr-O9jXFw-t240x240.jpg">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- ╔════════════════════════════╗
+         ║          HEADER           ║
+         ╚════════════════════════════╝ -->
+    <header class="header">
+        <a href="#" class="header-logo" aria-label="Golden Sound — главная">
+            <img
+                src="https://i1.sndcdn.com/avatars-GsePNi7tuSUlvHXr-O9jXFw-t240x240.jpg"
+                alt="Golden Sound"
+                class="logo-img"
+            >
+            <!-- ИЗМЕНЕНИЕ: добавлен текст логотипа -->
+            <span class="header-logo-text">GOLDEN SOUND</span>
+        </a>
+
+        <nav class="header-nav" aria-label="Навигация">
+            <a href="#artists">Артисты</a>
+            <a href="#services">Услуги</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+
+        <!-- ИЗМЕНЕНИЕ: стиль Liquid Glass -->
+        <a href="mailto:gsp.sound@mail.ru"
+           class="btn-primary"
+           aria-label="Отправить демо">ОТПРАВИТЬ ДЕМО</a>
+    </header>
+
+    <!-- ╔════════════════════════════╗
+         ║           HERO            ║
+         ╚════════════════════════════╝ -->
+    <section class="hero" id="about">
+        <!-- НОВОЕ: GS-логотип из частиц -->
+        <canvas id="hero-canvas" aria-hidden="true"></canvas>
+        <div class="hero-vignette" aria-hidden="true"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="hero-title-line">GOLDEN</span>
+                <span class="hero-title-line hero-title-gold">SOUND</span>
+            </h1>
+            <p class="hero-tagline">«Мы обречены на успех»</p>
+        </div>
+        <!-- ИЗМЕНЕНИЕ: убран scroll-hint -->
+    </section>
+
+    <!-- ╔════════════════════════════╗
+         ║         АРТИСТЫ           ║
+         ╚════════════════════════════╝ -->
+    <section class="section artists-section" id="artists">
+        <!-- ИЗМЕНЕНИЕ: z-index фикс — канвас строго на фоне -->
+        <canvas class="stars-canvas-bg" data-style="starlight" aria-hidden="true"></canvas>
+
+        <div class="section-header reveal">
+            <h2 class="section-title">
+                <i class="fa-solid fa-microphone header-icon" aria-hidden="true"></i>
+                <span>АРТИСТЫ</span>
+            </h2>
+        </div>
+
+        <div class="swiper artistSwiper reveal">
+            <div class="swiper-wrapper" id="artists-wrapper"></div>
+        </div>
+    </section>
+
+    <!-- ╔════════════════════════════╗
+         ║           УСЛУГИ          ║
+         ╚════════════════════════════╝ -->
+    <section class="section" id="services">
+        <canvas id="services-canvas" aria-hidden="true"></canvas>
+
+        <div class="section-header reveal">
+            <h2 class="section-title">
+                <i class="fa-solid fa-briefcase header-icon" aria-hidden="true"></i>
+                <span>УСЛУГИ</span>
+            </h2>
+        </div>
+
+        <div class="services-grid"></div>
+    </section>
+
+    <!-- ╔════════════════════════════╗
+         ║         СТАТИСТИКА        ║
+         ╚════════════════════════════╝
+         ИЗМЕНЕНИЕ: отдельный блок с собственным Liquid Glass -->
+    <section class="section stats-section" id="stats">
+        <canvas class="stars-canvas-bg" data-style="starlight" data-density="light" aria-hidden="true"></canvas>
+        <div class="stats-glass-wrap">
+            <div class="stats-grid">
+                <div class="stat-card reveal">
+                    <div class="stat-number" data-target="12"  data-suffix="+">0</div>
+                    <div class="stat-label">артистов</div>
+                </div>
+                <div class="stat-card reveal">
+                    <div class="stat-number" data-target="120" data-suffix="M+">0</div>
+                    <div class="stat-label">прослушиваний</div>
+                </div>
+                <div class="stat-card reveal">
+                    <div class="stat-number" data-target="300" data-suffix="+">0</div>
+                    <div class="stat-label">релизов</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ╔════════════════════════════╗
+         ║         КОНТАКТЫ          ║
+         ╚════════════════════════════╝
+         ИЗМЕНЕНИЕ: горизонтально, Liquid Glass, статусные заголовки -->
+    <section class="section contacts-section" id="contacts">
+        <canvas class="stars-canvas-bg" data-style="nebula" aria-hidden="true"></canvas>
+
+        <div class="section-header reveal">
+            <h2 class="section-title">
+                <i class="fa-solid fa-envelope header-icon" aria-hidden="true"></i>
+                <span>КОНТАКТЫ</span>
+            </h2>
+        </div>
+
+        <div class="contacts-grid">
+            <!-- ИЗМЕНЕНИЕ: "Ждём вас" → "Офис" -->
+            <div class="contacts-box reveal">
+                <h3 class="contacts-box-title">Офис</h3>
+                <ul class="contacts-list" id="contacts-list"></ul>
+            </div>
+
+            <!-- ИЗМЕНЕНИЕ: "Мы в сети" → "Связь" -->
+            <div class="contacts-box reveal">
+                <h3 class="contacts-box-title">Связь</h3>
+                <div class="contacts-social-list" id="contacts-social-list"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ╔════════════════════════════╗
+         ║           FOOTER          ║
+         ╚════════════════════════════╝
+         ИЗМЕНЕНИЕ: убрана секция "ПОДПИСЫВАЙТЕСЬ", только чистый футер -->
+    <footer>
+        <div id="footer-copyright">© 2026 Golden Sound. All rights reserved.</div>
+        <div id="footer-tagline">Москва, Россия</div>
+    </footer>
+
+</div><!-- /.page-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
